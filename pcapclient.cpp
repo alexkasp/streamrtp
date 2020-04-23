@@ -36,25 +36,25 @@ handle_packet(uint8_t* user, const struct pcap_pkthdr *hdr,
                       
     if(ip_header->protocol == IP_HEADER_PROTOCOL_TCP)
      {
-      struct tcphdr* tcp_header = (struct tcphdr*)next_header;
-     source_port = ntohs(tcp_header->source);
-                                                      dest_port = ntohs(tcp_header->dest);
-                                                              int tcp_header_size = tcp_header->doff * 4;
-                                                                      data_size = hdr->len - sizeof(struct ethhdr) -
-                                                                                              ip_header_size - tcp_header_size;
-                                                                                                  }
-                                                                                                      else if(ip_header->protocol == IP_HEADER_PROTOCOL_UDP)
-                                                                                                          {
-                                                                                                                  struct udphdr* udp_header = (struct udphdr*)next_header;
-                                                                                                                          source_port = ntohs(udp_header->source);
-                                                                                                                                  dest_port = ntohs(udp_header->dest);
-                                                                                                                                          data_size = hdr->len - sizeof(struct ethhdr) -
-                                                                                                                                                                  ip_header_size - sizeof(struct udphdr);
-                                                                                                                                                                      }
+          struct tcphdr* tcp_header = (struct tcphdr*)next_header;
+          source_port = ntohs(tcp_header->source);
+          dest_port = ntohs(tcp_header->dest);
+          int tcp_header_size = tcp_header->doff * 4;
+          data_size = hdr->len - sizeof(struct ethhdr) -
+          ip_header_size - tcp_header_size;
+     }
+     else if(ip_header->protocol == IP_HEADER_PROTOCOL_UDP)
+     {
+          struct udphdr* udp_header = (struct udphdr*)next_header;
+          source_port = ntohs(udp_header->source);
+          dest_port = ntohs(udp_header->dest);
+          data_size = hdr->len - sizeof(struct ethhdr) -
+          ip_header_size - sizeof(struct udphdr);
+     }
                                                                                                                                                                       
-                                                                                                                                                                          printf("\n%s:%d -> %s:%d, %d (0x%x) bytes\n\n",
-                                                                                                                                                                                  source_ip, source_port, dest_ip, dest_port,
-                                                                                                                                                                                          data_size, data_size); 
+     printf("\n%s:%d -> %s:%d, %d (0x%x) bytes\n\n",
+      source_ip, source_port, dest_ip, dest_port,
+      data_size, data_size);
 
 }
 
