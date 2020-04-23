@@ -1,4 +1,4 @@
-##include <list>
+#include <list>
 
 struct PortData
 {
@@ -6,9 +6,9 @@ struct PortData
 
 };
 
+
 class PcapClient
 {
-    std::list<PortData> portList;
     public:
         int addPort(PortData pd);
         int delPort(int port);

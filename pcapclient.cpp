@@ -11,6 +11,8 @@
 
 #define UNUSED(x) ((void)(x))
 
+std::list<PortData> portList;
+
 static void
 handle_packet(uint8_t* user, const struct pcap_pkthdr *hdr,
                 const uint8_t* bytes)
@@ -54,6 +56,7 @@ handle_packet(uint8_t* user, const struct pcap_pkthdr *hdr,
 
      for(auto x = portList.begin();x!=portList.end();++x)
      {
+
         if((*x).port == dest_port)
         {
             printf("\n%s:%d -> %s:%d, %d (0x%x) bytes\n\n",
@@ -87,7 +90,8 @@ int PcapClient::addPort(PortData pd)
 {
     portList.push_back(pd);
 }
+
 int PcapClient::delPort(int port)
 {
-   portList.remove_if([port](PortData pd){return pd.port == port})
+   portList.remove_if([port](PortData pd){return pd.port == port;});
 }
