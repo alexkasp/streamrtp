@@ -51,11 +51,16 @@ handle_packet(uint8_t* user, const struct pcap_pkthdr *hdr,
           data_size = hdr->len - sizeof(struct ethhdr) -
           ip_header_size - sizeof(struct udphdr);
      }
-                                                                                                                                                                      
-     printf("\n%s:%d -> %s:%d, %d (0x%x) bytes\n\n",
-      source_ip, source_port, dest_ip, dest_port,
-      data_size, data_size);
 
+     for(auto x = portList.begin();x!=portList.end();++x)
+     {
+        if((*x).port == dest_port)
+        {
+            printf("\n%s:%d -> %s:%d, %d (0x%x) bytes\n\n",
+            source_ip, source_port, dest_ip, dest_port,
+            data_size, data_size);
+        }
+    }
 }
 
 
@@ -76,4 +81,13 @@ int PcapClient::startListen()
 
         pcap_close(pcap);
         return 0;
+}
+
+int PcapClient::addPort(PortData pd)
+{
+    portList.push_back(pd);
+}
+int PcapClient::delPort(int port)
+{
+   portList.remove_if([port](PortData pd){return pd.port == port})
 }
