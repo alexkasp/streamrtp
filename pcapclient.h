@@ -1,5 +1,5 @@
 class PcapClient
 {
     public:
-        void startListen();
+        int startListen();
 };
